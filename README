@@ -1,0 +1,25 @@
+Maze Runner
+
+Objective: Get through the maze
+
+Controls: WASD
+
+Designs Goals:
+    1. First pass
+        i. Basic game loop
+            > Loop progressing whenver player makes a valid move
+        ii. User input
+            > Take from keyboard
+            > Reject if going into wall
+        iii. Maze tiles
+            > Empty spaces
+                > Start
+                > Finish
+            > Walls
+    2. Second pass
+        i. Randomly generated mazes
+            > Different options for maze size and complexity
+        ii. Leaderboard
+        iii. AI chasing player
+        iv. New tiles
+            > Opens new passages
