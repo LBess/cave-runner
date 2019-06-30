@@ -4,7 +4,6 @@
 #include <fstream>
 #include <stdexcept>
 #include <ncurses.h>
-#include "Tile.h"
 
 struct Point
 {
@@ -13,6 +12,13 @@ struct Point
     int x;
     int y;
 };
+
+struct Tile
+{
+    Tile();
+    Tile(char c);
+    char val;    
+}
 
 class Board
 {

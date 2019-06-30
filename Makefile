@@ -1,2 +1,2 @@
-main: main.cpp Board.cpp Tile.cpp
-	g++ main.cpp Board.cpp Tile.cpp -lncurses -o main
+main: main.cpp Board.cpp
+	g++ main.cpp Board.cpp -lncurses -o main

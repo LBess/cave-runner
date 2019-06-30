@@ -1,5 +1,6 @@
 #include "Board.h"
 
+//// Functions ////
 WINDOW* create_win(int width, int height)
 {
     // Center of terminal
@@ -11,10 +12,23 @@ WINDOW* create_win(int width, int height)
 
     return local_win;
 }
+///////////////
 
+//// Point ////
 Point::Point()
 : x(0), y(0)
 {}
+//////////////
+
+//// Tile ////
+Tile::Tile()
+: val('')
+{}
+
+Tile::Tile(char c)
+: val(c)
+{}
+/////////////
 
 Point::Point(int a, int b)
 : x(a), y(b)
