@@ -22,7 +22,7 @@ Point::Point()
 
 //// Tile ////
 Tile::Tile()
-: val('')
+: val(' ')
 {}
 
 Tile::Tile(char c)

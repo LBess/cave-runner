@@ -18,7 +18,7 @@ struct Tile
     Tile();
     Tile(char c);
     char val;    
-}
+};
 
 class Board
 {
