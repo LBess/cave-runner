@@ -2,26 +2,26 @@
 
 WINDOW* create_win(int width, int height)
 {
-    // Center of screen
+    // Center of terminal
     int start_x = (COLS - width) / 2;
     int start_y = (LINES - height) / 2;
 
     WINDOW* local_win = newwin(height, width*2, start_y, start_x); // Multiply width by 2 to account for spaces
-    //box(local_win, 0, 0);
     wrefresh(local_win);
 
     return local_win;
 }
 
-void destroy_win(WINDOW* win)
-{
-    //wborder(win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
-    wrefresh(win);
-    delwin(win);
-}
+Point::Point()
+: x(0), y(0)
+{}
 
 Point::Point(int a, int b)
 : x(a), y(b)
+{}
+
+Board::Board()
+: size(Point())
 {}
 
 Board::Board(int x, int y)
@@ -36,6 +36,42 @@ Board::Board(int x, int y)
             board->push_back(Tile(' '));
         }
     }
+}
+
+Board::Board(std::string filePath)
+: board(new std::vector<Tile>)
+{
+    std::ifstream file(filePath);
+    if (file.is_open()) {
+        int x;
+        int y;
+        file >> x >> y; // First two entries in maze file
+        size = Point(x, y);
+        win = (create_win(x, y));
+
+        char c;
+        int i = 0;
+        while (file.get(c)) {
+            if (c != '\n') {
+                board->push_back(Tile(c));
+                if (c == 'S') {
+                    // Player starting position
+                    // Reverse mapping, 1D -> 2D
+                    // i = x + width * y
+                    // x = i % width
+                    // y = (i - x) / width => Derived from the 2D -> 1D equation
+                    x = i % size.x;
+                    y = (i - x) / size.x;
+                    player = Point(x, y);
+                }
+                ++i; // Only incrementing on non-newline chars
+            }
+        }
+        file.close();
+    } else {
+        throw std::runtime_error ("Can't open file: " + filePath + '\n');
+    }
+    
 }
 
 void Board::input(int in)
@@ -130,18 +166,20 @@ void Board::input(int in)
 
 void Board::print()
 {
-    //destroy_win(win);
     delwin(win);
     win = create_win(size.x, size.y);
 
     for (int i = 0; i < board->size(); ++i) {
-        char msg = (*board)[i].val;
+        char ti = (*board)[i].val;
 
         if (i == player.x + size.x * player.y) {
             // 2D -> 1D Mapping Formula: i = x + width * y
             waddch(win, 'P');
+            if (ti == 'E') {
+                victory = true;
+            }
         } else {
-            waddch(win, msg);
+            waddch(win, ti);
         }
         if (i % size.x == size.x - 1) {
             waddch(win, '\n');

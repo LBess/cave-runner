@@ -1,5 +1,18 @@
 #include "Board.h"
 
+Board load_maze(std::string filePath)
+{
+    Board board;
+    
+    try {
+        board = Board(filePath);
+    } catch (std::runtime_error ex) {
+        printw(ex.what());
+    }
+
+    return board;
+}
+
 int main(void)
 {
     // ncurses initialization
@@ -9,7 +22,8 @@ int main(void)
     keypad(stdscr, true);   // F1
 
     int usrInput;
-    Board board = Board(9, 9);
+    //Board board = Board(9, 9);
+    Board board = Board("mazes/1");
     board.print();
 
     printw("Press Q to exit\n");
@@ -26,10 +40,13 @@ int main(void)
         }
         board.input(usrInput);
         board.print();
+        if (board.getVictory()) {
+            printw("You won!\n");
+            break;
+        }
     }
 
-    erase();
-    printw("Exiting");
+    printw("Enter a key to exit...");
     refresh();
 
     // ncurses deinitialization
