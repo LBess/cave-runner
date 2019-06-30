@@ -1,6 +1,6 @@
 #include <vector>
 #include <iostream>
-#include "tile.h"
+#include "Tile.h"
 
 class Board
 {
@@ -13,4 +13,3 @@ private:
     int size_y;
     std::vector<Tile>* board;
 };
-
