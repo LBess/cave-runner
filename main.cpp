@@ -19,10 +19,12 @@ int main(void)
     initscr();
     cbreak();   // Line buffering disabled
     noecho();
-    keypad(stdscr, true);   // F1
+    keypad(stdscr, TRUE);   // Function Key and Numpad usability
+    start_color();   // Allows for use of colors
+    init_pair(1, COLOR_BLUE, COLOR_BLACK);
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);
 
     int usrInput;
-    //Board board = Board(9, 9);
     Board board = Board("mazes/1");
     board.print();
 

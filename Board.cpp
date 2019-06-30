@@ -30,10 +30,13 @@ Tile::Tile(char c)
 {}
 /////////////
 
+//// Point ////
 Point::Point(int a, int b)
 : x(a), y(b)
 {}
+////////////
 
+//// Board ////
 Board::Board()
 : size(Point())
 {}
@@ -188,12 +191,18 @@ void Board::print()
 
         if (i == player.x + size.x * player.y) {
             // 2D -> 1D Mapping Formula: i = x + width * y
-            waddch(win, 'P');
+            waddch(win, 'P' | COLOR_PAIR(2));
             if (ti == 'E') {
                 victory = true;
             }
         } else {
-            waddch(win, ti);
+            if (ti == 'S') {
+                waddch(win, ti | COLOR_PAIR(1));
+            } else if (ti == 'E') {
+                waddch(win, ti | COLOR_PAIR(1));
+            } else {
+                waddch(win, ti);
+            }
         }
         if (i % size.x == size.x - 1) {
             waddch(win, '\n');
@@ -204,3 +213,4 @@ void Board::print()
 
     wrefresh(win);
 }
+////////////

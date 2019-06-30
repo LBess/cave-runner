@@ -2,8 +2,7 @@ Maze Runner, A C++ maze game
 
 Not affiliated with the novel nor movie.
 
-Objective: Get through the maze
-Controls: WASD
+To compile: Requires ncurses, must link with ncurses library, see Makefile for g++ example.
 
 Designs Goals:
     1. First pass (C)
