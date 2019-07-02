@@ -1,4 +1,6 @@
-# Cave Runner, A C++ maze game
+# Cave Runner
+
+## Description: A C++ maze game
 
 ## To compile: Requires ncurses, must link with ncurses library, see Makefile for g++ example.
 

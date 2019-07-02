@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Board.h"
 
 //// Functions ////
@@ -21,7 +23,6 @@ Tile::Tile()
 
 Tile::Tile(char c)
 : val(c)
-
 {}
 /////////////
 
@@ -45,7 +46,7 @@ Board::Board(int x, int y)
 }
 
 Board::Board(std::string filePath)
-: board(new std::vector<Tile>)
+: board(new std::vector<Tile>), goblins(new std::vector<Goblin>)
 {
     std::ifstream file(filePath);
     if (file.is_open()) {
@@ -71,7 +72,8 @@ Board::Board(std::string filePath)
                 } else if (c == GOBLIN_TILE) {
                     a = i % dimensions.x;
                     b = (i - b) % dimensions.x;
-                    goblins->push_back(Goblin(Point(a, b)));
+                    Point goblinPosition = Point(a, b);
+                    goblins->push_back(Goblin(goblinPosition));
                 }
                 ++i; // Only incrementing on non-newline chars
             }
@@ -169,7 +171,7 @@ void Board::input(int in)
                 break;
         }
     } catch (std::out_of_range ex) {
-        printw(ex.what());
+        //printw(ex.what());
     }
 }
 
@@ -183,15 +185,17 @@ void Board::print()
 
         if (i == player.position.x + dimensions.x * player.position.y) {
             // 2D -> 1D Mapping Formula: i = x + width * y
-            waddch(win, PLAYER_TILE | COLOR_PAIR(2));
+            waddch(win, PLAYER_TILE | COLOR_PAIR(1));
             if (ti == END_TILE) {
                 victory = true;
             }
         } else {
             if (ti == START_TILE) {
-                waddch(win, ti | COLOR_PAIR(1));
+                waddch(win, ti | COLOR_PAIR(3));
             } else if (ti == END_TILE) {
-                waddch(win, ti | COLOR_PAIR(1));
+                waddch(win, ti | COLOR_PAIR(3));
+            } else if (ti == GOBLIN_TILE) {
+                waddch(win, ti | COLOR_PAIR(2));
             } else {
                 waddch(win, ti);
             }
