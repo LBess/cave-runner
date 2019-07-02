@@ -1,10 +1,8 @@
-Maze Runner, A C++ maze game
+#Cave Runner, A C++ maze game
 
-Not affiliated with the novel nor movie.
+##To compile: Requires ncurses, must link with ncurses library, see Makefile for g++ example.
 
-To compile: Requires ncurses, must link with ncurses library, see Makefile for g++ example.
-
-Designs Goals:
+##Designs Goals:
     1. First pass (C)
         i. Basic game loop (C)
             > Loop progressing whenver player makes a valid move (C)
@@ -18,18 +16,23 @@ Designs Goals:
             > Walls (C)
         iv. Load mazes from text files (C)
     2. Second pass (*)
-        i. Randomly generated mazes ()
-            > Different options for maze size and complexity ()
+        i. Randomly generated mazes (*)
+            > Different options for maze size and complexity (*)
+            > Python script to generate maze (*)
         ii. Leaderboard ()
             > Maze specific
             > User inputs name
         iii. AI Goblin chasing player ()
-            > Goblin only moves when player moves
+            > Goblin only moves when player moves ()
         iv. New tiles ()
             > Open new passages ()
             > Slow down Goblin ()
         v. Error checking on custom mazes ()
         vi. Beautify game (*)
-            > Colors ()
+            > Colors (*)
             > Borders around window ()
+            > Different Wall tiles based on location (Vertical, Horizontal, Corner, etc.)
     3. Third pass ()
+        i. Multi stage levels
+            > Procedurally generate each time ()
+            > Staircase Tile ()

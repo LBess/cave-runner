@@ -1,3 +1,6 @@
+#ifndef BOARD
+#define BOARD
+
 #include <vector>
 #include <string>
 #include <iostream>
@@ -5,13 +8,15 @@
 #include <stdexcept>
 #include <ncurses.h>
 
-struct Point
-{
-    Point();
-    Point(int a, int b);
-    int x;
-    int y;
-};
+#include "Character.h"
+
+// Tile Macros
+#define EMPTY_TILE ' '
+#define WALL_TILE 'W'
+#define START_TILE 'S'
+#define END_TILE 'E'
+#define PLAYER_TILE 'P'
+#define GOBLIN_TILE 'G'
 
 struct Tile
 {
@@ -31,9 +36,14 @@ public:
     bool getVictory() { return victory; }
 
 private:
-    Point size;
-    Point player;
+    Point dimensions;
     std::vector<Tile>* board;
+    
+    Player player;
+    std::vector<Goblin>* goblins;
+    
     WINDOW* win;
     bool victory = false;
 };
+
+#endif

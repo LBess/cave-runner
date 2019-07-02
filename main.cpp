@@ -21,8 +21,9 @@ int main(void)
     noecho();
     keypad(stdscr, TRUE);   // Function Key and Numpad usability
     start_color();   // Allows for use of colors
-    init_pair(1, COLOR_BLUE, COLOR_BLACK);
+    init_pair(1, COLOR_BLUE, COLOR_BLACK);  // Pairing colors (Foreground, Background)
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
+    curs_set(0);    // Hiding cursor
 
     int usrInput;
     Board board = Board("mazes/1");
@@ -34,6 +35,7 @@ int main(void)
 
     while (usrInput = getch()) {
         erase();
+        board.print();
         printw("Press Q to exit\n");
         printw("Enter WASD to move\n");
         refresh();
