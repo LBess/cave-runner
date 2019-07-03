@@ -24,8 +24,8 @@
 ####    ii. Leaderboard ()
 #####       > Maze specific
 #####       > User inputs name
-####    iii. AI Goblin chasing player ()
-#####       > Goblin only moves when player moves ()
+####    iii. AI Goblin chasing player (*)
+#####       > Goblin only moves when player moves (*)
 ####    iv. New tiles ()
 #####       > Open new passages ()
 #####       > Slow down Goblin ()

@@ -44,6 +44,7 @@ int main(void)
             break;
         }
         board.input(usrInput);
+        board.goblinMove();
         board.print();
         if (board.getVictory()) {
             printw("You won!\n");
