@@ -4,7 +4,7 @@
 
 ## To compile: Requires ncurses, must link with ncurses library, see Makefile for g++ example.
 
-## Designs Goals:
+## Designs Goals (C=Complete, *=In progress):
 ### First pass (C)
 ####    i. Basic game loop (C)
 #####       > Loop progressing whenver player makes a valid move (C)
@@ -22,8 +22,8 @@
 #####       > Different options for maze size and complexity (*)
 #####       > Python script to generate maze (*)
 ####    ii. Leaderboard ()
-#####       > Maze specific
-#####       > User inputs name
+#####       > Maze specific ()
+#####       > User inputs name ()
 ####    iii. AI Goblin chasing player (*)
 #####       > Goblin only moves when player moves (*)
 ####    iv. New tiles ()
@@ -33,8 +33,8 @@
 ####    vi. Beautify game (*)
 #####       > Colors (*)
 #####       > Borders around window ()
-#####       > Different Wall tiles based on location (Vertical, Horizontal, Corner, etc.)
+#####       > Different Wall tiles based on location (Vertical, Horizontal, Corner, etc.) ()
 ### Third pass ()
-####    i. Multi stage levels
+####    i. Multi stage levels ()
 #####       > Procedurally generate each time ()
 #####       > Staircase Tile ()

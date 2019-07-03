@@ -4,6 +4,9 @@
 #include <ncurses.h>
 #include <vector>
 #include <stack>
+#include <string>
+#include <iostream>
+#include <fstream>
 #include "Tile.h"
 #include "Character.h"
 
@@ -33,7 +36,7 @@ private:
 public:
     Graph();
     Graph(std::vector<Tile>* tiles, Point dimensions);
-    void search(Point a, Point b);    // Djikstra's
+    void djikstras(Point player, Point goblin);    // Djikstra's
     void print();
 };
 

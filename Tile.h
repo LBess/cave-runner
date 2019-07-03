@@ -12,6 +12,7 @@
 struct Tile
 {
     char val;
+    int mat_index = 0;  // Adjacecy matrix row index
     Tile(): val(EMPTY_TILE) {}
     Tile(char c): val(c) {}
 };

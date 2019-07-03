@@ -78,7 +78,7 @@ Board::Board(std::string filePath)
         throw std::runtime_error ("Can't open file: " + filePath + '\n');
     }
     tileGraph = Graph(board, dimensions);
-    //tileGraph.print();
+    tileGraph.print();
 }
 
 void Board::input(int in)
@@ -173,10 +173,10 @@ void Board::input(int in)
 
 void Board::goblinMove()
 {
-    for (int i = 0; i != goblins.size(); ++i) {
-        // Call Djikstra's (tileGraph.search()) from this code block
-        goblins[i].position = Point(goblins[i].position.x, goblins[i].position.y - 1);
-    }
+    // for (int i = 0; i != goblins.size(); ++i) {
+    //     // Call Djikstra's (tileGraph.search()) from this code block
+    //     goblins[i].position = Point(goblins[i].position.x, goblins[i].position.y - 1);
+    // }
 }
 
 void Board::print()

@@ -1,9 +1,6 @@
 #ifndef BOARD
 #define BOARD
 
-#include <string>
-#include <iostream>
-#include <fstream>
 #include <stdexcept>
 
 #include "Graph.h"
