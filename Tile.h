@@ -1,6 +1,8 @@
 #ifndef TILE
 #define TILE
 
+#include <vector>
+
 // Tile Macros
 #define EMPTY_TILE ' '
 #define WALL_TILE 'W'
@@ -11,10 +13,19 @@
 
 struct Tile
 {
+    // Tile doubles up as a Node for Graph
+
     char val;
-    int mat_index = 0;  // Adjacecy matrix row index
-    Tile(): val(EMPTY_TILE) {}
-    Tile(char c): val(c) {}
+    int boardIndex;
+
+    // Graph vars
+    int matIndex = 0;  // Adjacency matrix row index
+    Tile* parent = nullptr;
+    std::vector<Tile*> edges;
+    bool visited = false;
+
+    Tile(): val(EMPTY_TILE) , boardIndex(0) {}
+    Tile(char c, int i): val(c), boardIndex(i) {}
 };
 
 #endif

@@ -4,6 +4,7 @@
 
 ## To compile: Requires ncurses, must link with ncurses library, see Makefile for g++ example.
 
+<pre>
 ## Designs Goals (C=Complete, *=In progress):
 ### First iteration (C)
 ####    i. Basic game loop (C)
@@ -49,3 +50,4 @@
 #####       > Different options for maze size and complexity ()
 #####       > Python script to generate maze ()
 #####       > Procedurally generate mazes on the file for multi-stage levels ()
+</pre>

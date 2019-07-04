@@ -2,7 +2,7 @@
 
 #include "Board.h"
 
-//// Functions ////
+//// Utility Functions ////
 WINDOW* create_win(int width, int height)
 {
     // Center of terminal
@@ -14,7 +14,7 @@ WINDOW* create_win(int width, int height)
 
     return local_win;
 }
-///////////////
+////////
 
 //// Board ////
 Board::Board()
@@ -22,15 +22,15 @@ Board::Board()
 {}
 
 Board::Board(int x, int y)
-: dimensions(Point(x, y)), board(new std::vector<Tile>), player(Player(Point(x/2, y/2))), goblins(std::vector<Goblin>()), win(create_win(x, y)) 
+: dimensions(Point(x, y)), board(std::vector<Tile*>()), win(create_win(x, y)) 
 {
     for (int i = 0; i < x*y; ++i) {
         // Generating the empty board
         if (i < dimensions.x || i % dimensions.x == 0 || i % dimensions.x == dimensions.x - 1 || i > x*(y-1)) { 
             // First Row || First Column || Last Column || Last Row
-            board->push_back(Tile(WALL_TILE));
+            board.push_back(new Tile(WALL_TILE, i));
         } else {
-            board->push_back(Tile(EMPTY_TILE));
+            board.push_back(new Tile(EMPTY_TILE, i));
         }
     }
     tileGraph = Graph(board, dimensions);
@@ -38,7 +38,7 @@ Board::Board(int x, int y)
 }
 
 Board::Board(std::string filePath)
-: board(new std::vector<Tile>), goblins(std::vector<Goblin>())
+: board(std::vector<Tile*>()), goblins(std::vector<Goblin>())
 {
     std::ifstream file(filePath);
     if (file.is_open()) {
@@ -59,16 +59,16 @@ Board::Board(std::string filePath)
                     // y = (i - x) / width => Derived from the 2D -> 1D equation
                     x = i % dimensions.x;
                     y = (i - x) / dimensions.x;
-                    player = Player(Point(x, y));
-                    board->push_back(Tile(c));
+                    player = Player(Point(x, y), i);
+                    board.push_back(new Tile(c, i));
                 } else if (c == GOBLIN_TILE) {
                     x = i % dimensions.x;
                     y = (i - x) / dimensions.x;
                     Point goblinPosition = Point(x, y);
-                    goblins.push_back(Goblin(goblinPosition));
-                    board->push_back(Tile(EMPTY_TILE));
+                    goblins.push_back(Goblin(goblinPosition, i));
+                    board.push_back(new Tile(EMPTY_TILE, i));
                 } else {
-                    board->push_back(Tile(c));
+                    board.push_back(new Tile(c, i));
                 }
                 ++i; // Only incrementing on non-newline chars
             }
@@ -90,76 +90,76 @@ void Board::input(int in)
             case 'W':
                 newPosition.y = player.position.y - 1;
                 i = newPosition.x + dimensions.x * newPosition.y;
-                if ((*board)[i].val == WALL_TILE) {
+                if (board[i]->val == WALL_TILE) {
                     throw std::out_of_range ("Can't walk into walls silly!\n");
                 } else {
-                    player = newPosition;
+                    player = Player(newPosition, i);
                 }
                 break;
             case 'w':
                 newPosition.y = player.position.y - 1;
                 i = newPosition.x + dimensions.x * newPosition.y;
-                if ((*board)[i].val == WALL_TILE) {
+                if (board[i]->val == WALL_TILE) {
                     throw std::out_of_range ("Can't walk into walls silly!\n");
                 } else {
-                    player = newPosition;
+                    player = Player(newPosition, i);
                 }
                 break;
 
             case 'A':
                 newPosition.x = player.position.x - 1;
                 i = newPosition.x + dimensions.x * newPosition.y;
-                if ((*board)[i].val == WALL_TILE) {
+                if (board[i]->val == WALL_TILE) {
                     throw std::out_of_range ("Can't walk into walls silly!\n");
                 } else {
-                    player = newPosition;
+                    player = Player(newPosition, i);
                 }
                 break;
             case 'a':
                 newPosition.x = player.position.x - 1;
                 i = newPosition.x + dimensions.x * newPosition.y;
-                if ((*board)[i].val == WALL_TILE) {
+                if (board[i]->val == WALL_TILE) {
                     throw std::out_of_range ("Can't walk into walls silly!\n");
                 } else {
-                    player = newPosition;
+                    player = Player(newPosition, i);
                 }
                 break;
 
             case 'S':
                 newPosition.y = player.position.y + 1;
                 i = newPosition.x + dimensions.x * newPosition.y;
-                if ((*board)[i].val == WALL_TILE) {
+                if (board[i]->val == WALL_TILE) {
                     throw std::out_of_range ("Can't walk into walls silly!\n");
                 } else {
-                    player = newPosition;
+                    player = Player(newPosition, i);
                 }
                 break;
             case 's':
                 newPosition.y = player.position.y + 1;
                 i = newPosition.x + dimensions.x * newPosition.y;
-                if ((*board)[i].val == WALL_TILE) {
+                if (board[i]->val == WALL_TILE) {
                     throw std::out_of_range ("Can't walk into walls silly!\n");
                 } else {
-                    player = newPosition;
+                    player = Player(newPosition, i);
                 }
                 break;
 
             case 'D':
                 newPosition.x = player.position.x + 1;
                 i = newPosition.x + dimensions.x * newPosition.y;
-                if ((*board)[i].val == WALL_TILE) {
+                if (board[i]->val == WALL_TILE) {
                     throw std::out_of_range ("Can't walk into walls silly!\n");
                 } else {
-                    player = newPosition;
+                    player = Player(newPosition, i);
                 }
                 break;
             case 'd':
                 newPosition.x = player.position.x + 1;
                 i = newPosition.x + dimensions.x * player.position.y;
-                if ((*board)[i].val == WALL_TILE) {
+                if (board[i]->val == WALL_TILE) {
                     throw std::out_of_range ("Can't walk into walls silly!\n");
                 } else {
-                    player = newPosition;
+                    player = Player(newPosition, i);
                 }
                 break;
 
@@ -173,10 +173,17 @@ void Board::input(int in)
 
 void Board::goblinMove()
 {
-    // for (int i = 0; i != goblins.size(); ++i) {
-    //     // Call Djikstra's (tileGraph.search()) from this code block
-    //     goblins[i].position = Point(goblins[i].position.x, goblins[i].position.y - 1);
-    // }
+    int moveIndex, moveX, moveY;
+    for (int i = 0; i != goblins.size(); ++i) {
+        moveIndex = tileGraph.BFS(player, goblins[i]);
+        goblins[i].boardIndex = moveIndex;
+        moveX = moveIndex % dimensions.x;
+        moveY = (moveIndex - moveX) / dimensions.x;
+        goblins[i].position = Point(moveX, moveY);
+        if (goblins[i].position == player.position) {
+            goblinHit = true;
+        }
+    }
 }
 
 void Board::print()
@@ -195,9 +202,9 @@ void Board::print()
 
     char ti;
     bool goblinCheck;
-    for (int i = 0; i < board->size(); ++i) {
+    for (int i = 0; i < board.size(); ++i) {
         goblinCheck = false;
-        ti = (*board)[i].val;
+        ti = board[i]->val;
         for (auto it = goblin_indexes.begin(); it != goblin_indexes.end(); ++it) {
             if (i == *it) {
                 goblinCheck = true;

@@ -8,6 +8,14 @@ struct Point
     Point(const Point& p) : x(p.x), y(p.y) {}
     int x;
     int y;
+    bool operator== (const Point& RHS)
+    {
+        if (this->x == RHS.x and this->y == RHS.y) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 };
 
 #endif

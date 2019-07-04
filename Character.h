@@ -7,22 +7,23 @@ class Character
 {
 public:
     Point position;
-    Character(Point p = Point()) : position(Point(p)) {}
+    int boardIndex;
+    Character(Point p, int i) : position(Point(p)), boardIndex(i) {}
 };
 
 class Player : public Character 
 {
 public:
-    int health;
-    Player(Point p = Point(), int h = 10) : Character(p), health(h) {}
+    bool alive = true;
+    Player() : Character(Point(), 0) {}
+    Player(Point p, int i) : Character(p, i) {}
 };
 
 class Goblin : public Character
 {
 public:
     int speed;
-    int attack;
-    Goblin(Point p, int s = 1, int a = 2) : Character(p), speed(s), attack(a) {}
+    Goblin(Point p, int i, int s = 1) : Character(p, i), speed(s) {}
 };
 
 #endif
