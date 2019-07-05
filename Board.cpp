@@ -3,7 +3,7 @@
 #include "Board.h"
 
 //// Utility Functions ////
-WINDOW* create_win(int width, int height)
+WINDOW* createWin(int width, int height)
 {
     // Center of terminal
     int start_x = (COLS - width) / 2;
@@ -22,7 +22,7 @@ Board::Board()
 {}
 
 Board::Board(int x, int y)
-: dimensions(Point(x, y)), board(std::vector<Tile*>()), win(create_win(x, y)) 
+: dimensions(Point(x, y)), board(std::vector<Tile*>()), win(createWin(x, y)) 
 {
     for (int i = 0; i < x*y; ++i) {
         // Generating the empty board
@@ -34,7 +34,6 @@ Board::Board(int x, int y)
         }
     }
     tileGraph = Graph(board, dimensions);
-    //tileGraph.print();
 }
 
 Board::Board(std::string filePath)
@@ -45,7 +44,7 @@ Board::Board(std::string filePath)
         int x, y, i, a, b;
         file >> x >> y; // First two entries in maze file
         dimensions = Point(x, y);
-        win = (create_win(x, y));
+        win = (createWin(x, y));
 
         char c;
         i = 0;
@@ -67,6 +66,11 @@ Board::Board(std::string filePath)
                     Point goblinPosition = Point(x, y);
                     goblins.push_back(Goblin(goblinPosition, i));
                     board.push_back(new Tile(EMPTY_TILE, i));
+                } else if (c == END_TILE) {
+                    x = i % dimensions.x;
+                    y = (i - x) / dimensions.x;
+                    endTile = Point(x, y);  
+                    board.push_back(new Tile(c, i));
                 } else {
                     board.push_back(new Tile(c, i));
                 }
@@ -78,25 +82,15 @@ Board::Board(std::string filePath)
         throw std::runtime_error ("Can't open file: " + filePath + '\n');
     }
     tileGraph = Graph(board, dimensions);
-    tileGraph.print();
 }
 
-void Board::input(int in)
+bool Board::input(int in)
 {
     int i;
     Point newPosition = player.position;
     try {
         switch (in) {
             case 'W':
-                newPosition.y = player.position.y - 1;
-                i = newPosition.x + dimensions.x * newPosition.y;
-                if (board[i]->val == WALL_TILE) {
-                    throw std::out_of_range ("Can't walk into walls silly!\n");
-                } else {
-                    player = Player(newPosition, i);
-                }
-                break;
-            case 'w':
                 newPosition.y = player.position.y - 1;
                 i = newPosition.x + dimensions.x * newPosition.y;
                 if (board[i]->val == WALL_TILE) {
@@ -115,26 +109,8 @@ void Board::input(int in)
                     player = Player(newPosition, i);
                 }
                 break;
-            case 'a':
-                newPosition.x = player.position.x - 1;
-                i = newPosition.x + dimensions.x * newPosition.y;
-                if (board[i]->val == WALL_TILE) {
-                    throw std::out_of_range ("Can't walk into walls silly!\n");
-                } else {
-                    player = Player(newPosition, i);
-                }
-                break;
 
             case 'S':
-                newPosition.y = player.position.y + 1;
-                i = newPosition.x + dimensions.x * newPosition.y;
-                if (board[i]->val == WALL_TILE) {
-                    throw std::out_of_range ("Can't walk into walls silly!\n");
-                } else {
-                    player = Player(newPosition, i);
-                }
-                break;
-            case 's':
                 newPosition.y = player.position.y + 1;
                 i = newPosition.x + dimensions.x * newPosition.y;
                 if (board[i]->val == WALL_TILE) {
@@ -153,22 +129,15 @@ void Board::input(int in)
                     player = Player(newPosition, i);
                 }
                 break;
-            case 'd':
-                newPosition.x = player.position.x + 1;
-                i = newPosition.x + dimensions.x * player.position.y;
-                if (board[i]->val == WALL_TILE) {
-                    throw std::out_of_range ("Can't walk into walls silly!\n");
-                } else {
-                    player = Player(newPosition, i);
-                }
-                break;
 
             default:
                 break;
         }
     } catch (std::out_of_range ex) {
         //printw(ex.what());
+        return false;   // Invalid move
     }
+    return true;
 }
 
 void Board::goblinMove()
@@ -189,7 +158,7 @@ void Board::goblinMove()
 void Board::print()
 {
     delwin(win);
-    win = create_win(dimensions.x, dimensions.y);
+    win = createWin(dimensions.x, dimensions.y);
 
     std::vector<int> goblin_indexes;
     Point goblin_point;
@@ -216,9 +185,6 @@ void Board::print()
         } else if (i == player.position.x + dimensions.x * player.position.y) {
             // 2D -> 1D Mapping Formula: i = x + width * y
             waddch(win, PLAYER_TILE | COLOR_PAIR(1));
-            if (ti == END_TILE) {
-                victory = true;
-            }
         } else {
             if (ti == START_TILE) {
                 waddch(win, ti | COLOR_PAIR(3));

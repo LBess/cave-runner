@@ -1,11 +1,5 @@
 #include "Graph.h"
 
-//// Utility Functions ////
-
-
-
-////////
-
 //// Graph ////
 Graph::Graph()
 : mat(std::vector<int>()), height(0), width(0)
@@ -125,18 +119,18 @@ Graph::Graph(std::vector<Tile*>& tiles, Point dimensions)
 int Graph::BFS(Player player, Goblin goblin)
 {
     std::queue<Tile*> nodeQueue;
-    std::vector<int> parents(nodes.size(), -1);    // For keeping track of the shortest-path
 
     int playerNodeIndex, goblinNodeIndex;
     for (int i = 0; i < nodes.size(); ++ i) {
+        // Initializng nodes' visited and parent parameters
+        nodes[i]->parent = nullptr;
         if (nodes[i]->boardIndex == goblin.boardIndex) {
-            nodes[i]->visited = true;   // Don't get your ='s and =='s mixed up haha
-            nodes[i]->parent = nullptr;    // Source node
+            // The BFS starts at the goblin node, so it's marked as visited
+            nodes[i]->visited = true;   // (Don't get your ='s and =='s mixed up haha)
             nodeQueue.push(nodes[i]);
             goblinNodeIndex = i;
         } else {
             nodes[i]->visited = false;
-            nodes[i]->parent = nullptr;
         }
 
         if (nodes[i]->boardIndex == player.boardIndex) {
@@ -147,6 +141,8 @@ int Graph::BFS(Player player, Goblin goblin)
     Tile* currentNode;
     Tile* connectedNode;
     while (!nodeQueue.empty()) {
+        // The queue is necessary for BFS, it'll continue on until either all of the recursively connected nodes to the source node
+        // have been checked, or until it reaches the target node
         currentNode = nodeQueue.front();
         nodeQueue.pop();
         if (currentNode->boardIndex == nodes[playerNodeIndex]->boardIndex) {
@@ -155,7 +151,7 @@ int Graph::BFS(Player player, Goblin goblin)
         for (int i = 0; i < currentNode->edges.size(); ++i) {
             connectedNode = currentNode->edges[i];
             if (!connectedNode->visited) {
-                connectedNode->visited = true;
+                connectedNode->visited = true;  // Marking as visited so it can't be revisited
                 connectedNode->parent = currentNode;
                 nodeQueue.push(connectedNode);
             }
@@ -165,6 +161,8 @@ int Graph::BFS(Player player, Goblin goblin)
     Tile* node = nodes[playerNodeIndex];
     int goblinMoveIndex;
     while (node->parent != nodes[goblinNodeIndex] && node->parent != nullptr) {
+        // Tracing back from the Player (last node in the BFS) to the Goblin (Source Node) via the parent parameter. 
+        // This generates the shortest path between the two.
         // Second predicate necessary for when the Goblin occupies the same tile as the player
         node = node->parent;
     }

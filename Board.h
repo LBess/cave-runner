@@ -9,6 +9,7 @@ class Board
 {
 private:
     Point dimensions;
+    Point endTile;
     std::vector<Tile*> board;
     Graph tileGraph;
 
@@ -16,17 +17,16 @@ private:
     std::vector<Goblin> goblins;
     
     WINDOW* win;
-    bool victory = false;
     bool goblinHit = false;
 
 public:
     Board();
     Board(int x, int y);
     Board(std::string filePath);
-    void input(int in);
+    bool input(int in);
     void goblinMove();
     void print();
-    bool getVictory() { return victory; }
+    bool checkVictory() { return (player.position == endTile) ? (true) : (false); }
     bool getGoblinHit() { return goblinHit; }
 };
 
