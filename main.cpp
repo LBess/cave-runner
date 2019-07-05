@@ -1,7 +1,5 @@
 #include <menu.h>
 #include "Board.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 Board load_maze(std::string filePath)
 {
@@ -18,6 +16,8 @@ Board load_maze(std::string filePath)
 
 std::string startScreen()
 {
+    // Utilizes the menu.h library to display the start menu
+    // Initializing start menu items
     int c;
     char maze1 [] = "Maze 1";
     char maze2 [] = "Maze 2";
@@ -32,14 +32,20 @@ std::string startScreen()
     }
     startItems[choices.size()] = NULL;
 
+    // Initialzing the start menu
     MENU* startMenu;
     startMenu = new_menu((ITEM**)startItems);
+    set_menu_mark(startMenu, " * ");
+
+    // Initializing start menu window
     WINDOW* startMenuWin;
     startMenuWin = newwin(5, 9, (LINES - 5) / 2, (COLS - 9) / 2);
     keypad(startMenuWin, TRUE);
-    set_menu_win(startMenu, startMenuWin);  // Connecting menu and window
-    set_menu_mark(startMenu, " * ");
 
+    // Connecting menu and window
+    set_menu_win(startMenu, startMenuWin);
+    
+    // Starting menu and window
     post_menu(startMenu);
     wrefresh(startMenuWin);
 
@@ -47,6 +53,8 @@ std::string startScreen()
     std::string chosenItemName;
     bool end = false;
     while ((c = getch()) != KEY_F(1)) {
+        // Drives the menu
+        // Three actions: Arrow up, Arrow down, and Enter
         switch(c) {
             case KEY_UP:
                 // Move menu selection up
@@ -63,7 +71,7 @@ std::string startScreen()
                 }
                 break;
             case 10:
-                // Terminating Action
+                // Enter, terminating action
                 end = true;
                 chosenItemName = choices[row];
                 break;
@@ -110,7 +118,6 @@ int main(void)
         startChoice = startScreen();
 
         if (startChoice != "Quit") {
-            
             if (startChoice == "Maze 1") {
                 board = Board("mazes/1");
             } else if (startChoice == "Maze 2") {
@@ -133,8 +140,9 @@ int main(void)
             bool checkInput;
             while (usrInput = getch()) {
                 invalidInput = false;
-                char buffer [10];   // Don't overflow please
+                char buffer [10];
 
+                // Changing usrInput if either arrow keys or lowercase wasd
                 if (usrInput == KEY_UP || usrInput == 'w') {
                     usrInput = 'W';
                 } else if (usrInput == KEY_DOWN || usrInput == 's') {
@@ -163,6 +171,7 @@ int main(void)
                     }
                 }
                 
+                // Reprinting updated board
                 erase();
                 sprintf(buffer, "%d", moveNumber);
                 printw("Move number: ");
@@ -186,7 +195,9 @@ int main(void)
         } else {
             replay = false;
         }
+        board.deallocate();
     }
+
     // ncurses deinitialization
     endwin();
     return 0;

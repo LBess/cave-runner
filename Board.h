@@ -26,8 +26,9 @@ public:
     bool input(int in);
     void goblinMove();
     void print();
-    bool checkVictory() { return (player.position == endTile) ? (true) : (false); }
+    bool checkVictory() { return player.position == endTile; }
     bool getGoblinHit() { return goblinHit; }
+    void deallocate();
 };
 
 #endif

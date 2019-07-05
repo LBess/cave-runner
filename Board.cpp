@@ -84,6 +84,13 @@ Board::Board(std::string filePath)
     tileGraph = Graph(board, dimensions);
 }
 
+void Board::deallocate()
+{
+    for (int i = 0; i < board.size(); ++i) {
+        delete board[i];
+    }
+}
+
 bool Board::input(int in)
 {
     int i;
