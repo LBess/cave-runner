@@ -1,48 +1,17 @@
-# Cave Runner
+# Maze Runner
 
-## Description: A C++ maze game
+## Requirements 
 
-## To compile: Requires ncurses, must link with ncurses library, see Makefile for g++ example.
+ncurses C++ library
 
+## Overview
 
-## Designs Goals (C=Complete, *=In progress):
-<pre>
-First iteration (C)
-    i. Basic game loop (C)
-        > Loop progressing whenver player makes a valid move (C)
-    ii. User input (C)
-        > Take from keyboard (C)
-        > Reject if going into wall (C)
-    iii. Maze tiles (C)
-        > Empty spaces (C)
-        > Start (C)
-        > Finish (C)
-        > Walls (C)
-    iv. Load mazes from text files (C)
-Second iteration (*)
-    i. Leaderboard ()
-        > Level specific ()
-        > Custom usernames ()
-    ii. AI Goblin chasing player (C)
-        > Adjacency matrix representation of the maze (C)
-        > BFS Shortest Path Algorithm implementation for the Goblin's pathfinding (C)
-    iii. Beautify game (*)
-        > Colors for unique tiles/characters (C)
-        > Different Wall tiles based on location (Vertical, Horizontal, Corner, etc.) ()
-    iv. Improve UX (*)
-        > Start screen (C)
-            - Choose level (C)
-        > Game runtime (C)
-            - Message box with move history (C)
-        > End screen (*)
-            - Play another maze (C)
-            - Display leaderboard ()
-Third iteration ()
-    i. Multi stage levels ()
-        > Proper game logic to handle multiple stages ()
-    ii. Error checking on custom mazes ()
-    iii. New tiles ()
-        > Breakable Wall Tile ()
-        > Stun Goblin Tile ()
-        > Staircase Tile ()
-</pre>
+This is a simple maze solving game. The main purpose of it was to learn about the ncurses library, implement the BFS algorithm as pathfinding for an AI, and to refresh my understanding of the adjacency matrix.
+
+## Controls and Gameplay
+
+Use WASD to move the player character. The objective is to reach the end (E). Goblins (G) will kill the player character if they reach them.
+
+## Maps
+
+New maps can be created, simply follow the format of the ones in mazes/. The width and height of the map should be on the first row of the file, and should appear accordingly. The maps must be rectangular.
